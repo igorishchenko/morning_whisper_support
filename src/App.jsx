@@ -40,8 +40,12 @@ function Navigation() {
 }
 
 function App() {
+  // Get base path from import.meta.env.BASE_URL (set by Vite)
+  // This will be '/' for local dev and '/morning_whisper_support/' for GitHub Pages
+  const basename = import.meta.env.BASE_URL || '/'
+
   return (
-    <Router>
+    <Router basename={basename}>
       <div className="app">
         <Navigation />
         <main className="main-content">
