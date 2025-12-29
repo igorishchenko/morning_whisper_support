@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          GITHUB_PAGES: true
+          GITHUB_PAGES: 'true'
           VITE_API_URL: ${{ secrets.VITE_API_URL || 'https://your-api-domain.com/api' }}
       
       - name: Copy 404.html
