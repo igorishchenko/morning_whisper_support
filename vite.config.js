@@ -17,5 +17,11 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 4173,
+    strictPort: true,
+    // Preview uses the same base path as the build
+    // Vite automatically handles SPA routing and serves index.html for all routes
+  },
 })
 
