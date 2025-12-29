@@ -42,7 +42,7 @@ app.post('/api/contact', async (req, res) => {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Morning Whisper Support <onboarding@resend.dev>', // Update this with your verified domain
+      from: 'Morning Whisper Support <ischenko.vadyus@gmail.com>', // Update this with your verified domain
       to: 'ischenko.vadyus@gmail.com',
       replyTo: email,
       subject: `Contact Form: ${subject}`,
