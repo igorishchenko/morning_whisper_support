@@ -18,28 +18,23 @@ npm install
 
 ### Development
 
-Run the development server:
+Run the development servers:
 
 ```bash
-npm run dev
-```
+# Run both frontend and backend together
+npm run dev:all
 
-The app will be available at `http://localhost:5173`
+# Or run separately:
+npm run dev        # Frontend (http://localhost:5173)
+npm run dev:server # Backend (http://localhost:3001)
+```
 
 ### Build
 
-Build for production:
-
 ```bash
-npm run build
-```
-
-### Preview
-
-Preview the production build:
-
-```bash
-npm run preview
+npm run build          # Local build
+npm run build:github   # Build for GitHub Pages
+npm run preview        # Preview local build
 ```
 
 ## Pages
@@ -48,50 +43,45 @@ npm run preview
 - `/privacy` - Privacy Policy page
 - `/terms` - Terms of Use page
 
+## Setup
+
+### Environment Variables
+
+Create a `.env` file:
+
+```env
+RESEND_API_KEY=re_your_api_key_here
+PORT=3001
+```
+
+### Resend API Key
+
+1. Sign up at https://resend.com/
+2. Get your API key from the dashboard
+3. Add it to `.env` file
+
+The backend uses `onboarding@resend.dev` as the "from" email (no DNS verification needed).
+
 ## Deployment
 
-This app is configured for GitHub Pages deployment. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+### Frontend (GitHub Pages)
 
-### Quick Deploy
+1. Push to `main` branch
+2. GitHub Actions automatically deploys
+3. Site: `https://igorishchenko.github.io/morning_whisper_support/`
 
-1. **Deploy Frontend to GitHub Pages:**
-   - Push to `main` branch
-   - GitHub Actions will automatically deploy
-   - Site will be at: `https://yourusername.github.io/morning_whisper_support/`
+### Backend (Railway/Render/Fly.io)
 
-2. **Deploy Backend Separately:**
-   - Deploy `server.js` to Railway, Render, or Fly.io
-   - Set `RESEND_API_KEY` environment variable
-   - Add backend URL to GitHub Secrets as `VITE_API_URL`
+1. Deploy `server.js` to a hosting service
+2. Set `RESEND_API_KEY` environment variable
+3. Add backend URL to GitHub Secrets as `VITE_API_URL`
+4. Redeploy frontend
 
 ## Technologies
 
 - React 18
 - React Router DOM
 - Vite
-- Resend (for email sending)
+- Resend (email sending)
 - Express (backend API)
-- Modern CSS
-
-## Email Setup
-
-This app uses Resend to send contact form emails. See [RESEND_SETUP.md](./RESEND_SETUP.md) for setup instructions.
-
-### Quick Start
-
-1. Create a `.env` file with your Resend API key:
-   ```
-   RESEND_API_KEY=re_your_api_key_here
-   PORT=3001
-   ```
-
-2. Start the development servers:
-   ```bash
-   # Option 1: Run both together
-   npm run dev:all
-   
-   # Option 2: Run separately
-   npm run dev        # Frontend (Terminal 1)
-   npm run dev:server # Backend (Terminal 2)
-   ```
 
