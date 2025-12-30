@@ -41,8 +41,12 @@ app.post('/api/contact', async (req, res) => {
     }
 
     // Send email using Resend
+    // Using onboarding@resend.dev (Resend's test domain - no DNS verification needed)
+    // For production with custom domain, set RESEND_FROM_EMAIL environment variable
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
+    
     const { data, error } = await resend.emails.send({
-      from: 'Morning Whisper Support <ischenko.vadyus@gmail.com>', // Update this with your verified domain
+      from: fromEmail,
       to: 'ischenko.vadyus@gmail.com',
       replyTo: email,
       subject: `Contact Form: ${subject}`,

@@ -18,21 +18,23 @@ The contact form uses Resend to send emails to `ischenko.vadyus@gmail.com`.
      RESEND_API_KEY=re_your_api_key_here
      PORT=3001
      ```
+   - Optionally set a custom "from" email (defaults to Resend test domain):
+     ```
+     RESEND_FROM_EMAIL=Morning Whisper Support <onboarding@resend.dev>
+     ```
    - For production, also set:
      ```
      VITE_API_URL=https://your-api-domain.com/api
      ```
 
-3. **Update the "from" email address**
-   - In `server.js`, update the `from` field:
-     ```javascript
-     from: 'Morning Whisper Support <onboarding@resend.dev>',
+3. **"From" Email Address**
+   - **For testing:** The default `onboarding@resend.dev` works without verification
+   - **For production:** Verify your domain in Resend and set:
      ```
-   - Replace with your verified domain email, e.g.:
-     ```javascript
-     from: 'Morning Whisper Support <support@yourdomain.com>',
+     RESEND_FROM_EMAIL=Morning Whisper Support <support@yourdomain.com>
      ```
-   - Or use the Resend test domain: `onboarding@resend.dev` (for testing)
+   - **Important:** You cannot use Gmail addresses (like `@gmail.com`) as the "from" address
+   - The "to" address can be any email (including Gmail)
 
 4. **Start the Development Servers**
    

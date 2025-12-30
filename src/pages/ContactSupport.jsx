@@ -27,7 +27,14 @@ function ContactSupport() {
 
     try {
       // API endpoint - adjust if your server runs on a different port
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/contact'
+      // In production, VITE_API_URL should be set to your backend URL
+      const baseApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/api'
+      const apiUrl = `${baseApiUrl}/contact`
+      
+      // Check if we're in production without a backend URL
+      if (import.meta.env.PROD && (!import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL.includes('your-api-domain'))) {
+        throw new Error('Backend API is not configured. Please contact us directly at ischenko.vadyus@gmail.com')
+      }
       
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -50,7 +57,20 @@ function ContactSupport() {
       }, 5000)
     } catch (err) {
       console.error('Email sending error:', err)
-      setError(err.message || 'Failed to send message. Please try again or email us directly at ischenko.vadyus@gmail.com')
+      
+      // Provide helpful error messages
+      let errorMessage = 'Failed to send message. '
+      if (err.message && err.message.includes('Backend API is not configured')) {
+        errorMessage += err.message
+      } else if (err.message && err.message.includes('JSON')) {
+        errorMessage += 'The backend server is not responding correctly. Please email us directly at ischenko.vadyus@gmail.com'
+      } else if (err.message && (err.message.includes('405') || err.message.includes('404'))) {
+        errorMessage += 'The backend API is not configured. Please email us directly at ischenko.vadyus@gmail.com'
+      } else {
+        errorMessage += err.message || 'Please try again or email us directly at ischenko.vadyus@gmail.com'
+      }
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
