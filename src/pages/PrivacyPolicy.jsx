@@ -19,6 +19,25 @@ function PrivacyPolicy() {
       </section>
 
       <section className="policy-section">
+        <h2>Entertainment and Disclaimer</h2>
+        <p>
+          <strong>Important:</strong> Morning Whisper is provided solely for entertainment and fun purposes. The predictions, whispers, and content provided by the App are generated for amusement and should not be taken as professional advice, guidance, or factual information.
+        </p>
+        <p>
+          <strong>No Responsibility for User Actions:</strong> We are not responsible for any decisions, actions, or consequences that may result from your use of this App. The App's content is provided "as is" for entertainment purposes only, and you acknowledge that:
+        </p>
+        <ul>
+          <li>The predictions and content are not based on any scientific, professional, or factual basis</li>
+          <li>You should not rely on the App's content for making important life decisions</li>
+          <li>You are solely responsible for your own actions and decisions</li>
+          <li>We disclaim any liability for any loss, damage, or harm that may arise from your use of the App or reliance on its content</li>
+        </ul>
+        <p>
+          By using the App, you agree that you will not hold us liable for any outcomes resulting from your interpretation or use of the App's entertainment content.
+        </p>
+      </section>
+
+      <section className="policy-section">
         <h2>Information We Collect</h2>
         
         <h3>Information Stored Locally on Your Device</h3>
