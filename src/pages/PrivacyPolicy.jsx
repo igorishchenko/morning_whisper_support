@@ -6,7 +6,7 @@ function PrivacyPolicy() {
   return (
     <div className="page">
       <h1>Privacy Policy for Morning Whisper</h1>
-      <p className="last-updated"><strong>Last Updated:</strong> [Date]</p>
+      <p className="last-updated"><strong>Last Updated:</strong> 03.01.2026</p>
 
       <section className="policy-section">
         <h2>Introduction</h2>
