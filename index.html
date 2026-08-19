@@ -3,13 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#FDF3E8" />
     <meta name="description" content="Support, Privacy Policy and Terms of Use for Turn the Cup — the daily coffee-cup whisper app for iOS and Android." />
     <title>Turn the Cup — Support</title>
+    <script>
+      // Second half of the spa-github-pages trick. public/404.html rewrites
+      // /privacy to /?/privacy so GitHub Pages serves this file; this turns it
+      // back into a real path before React Router mounts. Without it, every
+      // deep link — including the privacy policy URL in the store listings —
+      // silently lands on the home page.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash)
+        }
+      })(window.location)
+    </script>
   </head>
   <body>
     <div id="root"></div>
