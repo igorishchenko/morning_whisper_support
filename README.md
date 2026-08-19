@@ -1,6 +1,6 @@
-# Morning Whisper Support
+# Turn the Cup — Support Site
 
-A simple React application for Morning Whisper support pages.
+Support, Privacy Policy and Terms of Use pages for **Turn the Cup** (`com.entertainment.turnthecup`). The repository name still says `morning_whisper_support` — that was the app's old name and survives only in the repo path and the GitHub Pages base URL.
 
 ## Features
 

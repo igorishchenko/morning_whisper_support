@@ -1,0 +1,176 @@
+/* Turn the Cup — design tokens.
+   Ported verbatim from the Claude Design project
+   (_ds/turn-the-cup-design-system/tokens/*.css), which is the same token set the
+   app ships as `constants/theme/sereneMorning.ts`. Keep the two in sync. */
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600&family=Outfit:wght@300;400;500;600;700&display=swap");
+
+:root {
+  /* Roast — deep browns, the ink of the brand */
+  --roast-900: #241209;
+  --roast-800: #2F1A10;
+  --roast-700: #3E2417;
+  --roast-600: #523020;
+  --roast-500: #6B4229;
+  /* Plum — the sheet/footer colour */
+  --plum-900: #3C142A;
+  --plum-800: #4A1B33;
+  /* Caramel — primary warm accent */
+  --caramel-700: #8F4A1D;
+  --caramel-600: #A85A26;
+  --caramel-500: #C1743C;
+  --caramel-400: #D08A55;
+  --caramel-300: #DFA97C;
+  --caramel-200: #EBC6A2;
+  /* Terracotta — high-energy accent for CTAs */
+  --terracotta-600: #C6431F;
+  --terracotta-500: #E2542A;
+  --terracotta-400: #EC7550;
+  /* Cream & tan — surfaces */
+  --cream-50: #FFFBF6;
+  --cream-100: #FDF3E8;
+  --cream-200: #F7E7D5;
+  --cream-300: #F0D9BF;
+  --tan-400: #E3C49E;
+  --tan-500: #D2A878;
+  --tan-600: #BE8E5C;
+  /* Support */
+  --gold-500: #E8A825;
+  --leaf-500: #2BBE63;
+  --berry-500: #D62839;
+  --white: #FFFFFF;
+
+  /* Semantic aliases — use these in components */
+  --bg-app: var(--cream-100);
+  --bg-app-warm: var(--cream-300);
+  --bg-sheet: var(--plum-900);
+  --surface-card: var(--white);
+  --surface-raised: var(--cream-50);
+  --surface-sunken: var(--cream-200);
+  --surface-inverse: var(--roast-800);
+  --text-strong: var(--roast-900);
+  --text-body: var(--roast-600);
+  --text-muted: #8C7461;
+  --text-inverse: var(--cream-50);
+  --text-on-accent: var(--white);
+  --accent: var(--caramel-500);
+  --accent-hover: var(--caramel-600);
+  --accent-press: var(--caramel-700);
+  --accent-soft: var(--caramel-200);
+  --accent-hot: var(--terracotta-500);
+  --accent-hot-hover: var(--terracotta-600);
+  --price: var(--terracotta-600);
+  --favourite: var(--berry-500);
+  --border-soft: #EBD9C4;
+  --border-strong: #DDC3A4;
+  --border-on-dark: rgba(255, 251, 246, .22);
+  --scrim: rgba(36, 18, 9, .55);
+  --scrim-soft: rgba(36, 18, 9, .28);
+  --focus-ring: var(--caramel-600);
+
+  /* Typography */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Outfit", "Segoe UI", system-ui, sans-serif;
+
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 28px;
+  --text-4xl: 34px;
+  --text-5xl: 40px;
+  --display-sm: 26px;
+  --display-md: 32px;
+  --display-lg: 40px;
+  --display-xl: 48px;
+
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 800;
+  --leading-tight: 1.08;
+  --leading-snug: 1.25;
+  --leading-normal: 1.45;
+  --leading-relaxed: 1.6;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-caps: 0.12em;
+
+  /* Composed roles */
+  --type-hero: var(--weight-black) var(--display-lg)/var(--leading-tight) var(--font-display);
+  --type-screen-title: var(--weight-bold) var(--text-2xl)/var(--leading-snug) var(--font-display);
+  --type-section: var(--weight-bold) var(--text-2xl)/var(--leading-snug) var(--font-display);
+  --type-card-title: var(--weight-bold) var(--text-lg)/var(--leading-snug) var(--font-display);
+  --type-body: var(--weight-regular) var(--text-base)/var(--leading-relaxed) var(--font-body);
+  --type-body-sm: var(--weight-regular) var(--text-sm)/var(--leading-normal) var(--font-body);
+  --type-label: var(--weight-medium) var(--text-sm)/1.2 var(--font-body);
+  --type-button: var(--weight-semibold) var(--text-md)/1 var(--font-body);
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --gutter-screen: 20px;
+  --gap-card: 14px;
+  --gap-inline: 8px;
+
+  /* Nothing in Turn the Cup has a sharp corner. */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-sheet: 32px;
+  --radius-pill: 999px;
+  --radius-card: var(--radius-lg);
+  --radius-control: var(--radius-md);
+  --radius-button: var(--radius-pill);
+
+  --tap-min: 44px;
+  --control-h-sm: 36px;
+  --control-h-md: 48px;
+  --control-h-lg: 56px;
+  --topbar-h: 56px;
+
+  /* Elevation */
+  --shadow-1: 0 2px 8px rgba(62, 36, 23, .06);
+  --shadow-2: 0 8px 20px rgba(62, 36, 23, .10);
+  --shadow-3: 0 16px 36px rgba(62, 36, 23, .14);
+  --shadow-accent: 0 10px 22px rgba(193, 116, 60, .28);
+  --shadow-hot: 0 10px 22px rgba(226, 84, 42, .30);
+  --shadow-inset-soft: inset 0 1px 0 rgba(255, 255, 255, .55);
+  --border-hairline: 1px solid var(--border-soft);
+  --glass-blur: blur(10px);
+
+  /* Motion */
+  --ease-cozy: cubic-bezier(.22, .61, .36, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.4, 0, .2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --press-scale: 0.97;
+  --transition-control: transform var(--dur-fast) var(--ease-cozy),
+    background-color var(--dur-base) var(--ease-cozy),
+    box-shadow var(--dur-base) var(--ease-cozy),
+    color var(--dur-base) var(--ease-cozy);
+
+  /* Site-only layout tokens */
+  --page-max: 1120px;
+  --prose-max: 760px;
+}
