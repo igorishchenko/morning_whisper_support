@@ -48,7 +48,8 @@ app.post('/api/contact', async (req, res) => {
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: 'ischenko.vadyus@gmail.com',
-      replyTo: email,
+      // The SDK (v3) sends this key through verbatim — `replyTo` is dropped silently.
+      reply_to: email,
       subject: `Contact Form: ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>
