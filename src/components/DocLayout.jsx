@@ -5,7 +5,16 @@ import React from 'react'
  * `sections` drives the contents list; each entry's `id` must match the
  * corresponding <section id="…"> rendered in `children`.
  */
-export function DocLayout({ eyebrow, title, lede, updated, sections, children }) {
+export function DocLayout({
+  eyebrow,
+  title,
+  lede,
+  updated,
+  updatedLabel = 'Last updated:',
+  tocTitle = 'On this page',
+  sections,
+  children,
+}) {
   return (
     <div className="page">
       <header className="page-hero">
@@ -13,13 +22,13 @@ export function DocLayout({ eyebrow, title, lede, updated, sections, children })
         <h1>{title}</h1>
         <p className="page-description">{lede}</p>
         <p className="last-updated">
-          <strong>Last updated:</strong>&nbsp;{updated}
+          <strong>{updatedLabel}</strong>&nbsp;{updated}
         </p>
       </header>
 
       <div className="doc-layout">
         <aside className="doc-toc" aria-label="On this page">
-          <h2>On this page</h2>
+          <h2>{tocTitle}</h2>
           <ol>
             {sections.map((section) => (
               <li key={section.id}>
