@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://igorishchenko.github.io/morning_whisper_support/sitemap.xml

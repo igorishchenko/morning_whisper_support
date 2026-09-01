@@ -1,0 +1,1081 @@
+/* ============================================================================
+   Turn the Cup — landing page.
+
+   Built on the shared tokens in src/styles/tokens.css (ported verbatim from the
+   Claude Design project). No literal colour, radius or duration below that is
+   not either a token or a one-off wash tuned from one.
+
+   Motion contract: every animated property is transform or opacity, so nothing
+   here can trigger layout. Reveals are driven by .is-revealed, which
+   useReveal() adds once; parallax writes transform on [data-parallax] from a
+   single rAF loop. Both no-op under prefers-reduced-motion.
+   ========================================================================= */
+
+.landing {
+  --section-gap: clamp(72px, 9vw, 144px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  padding-bottom: var(--space-9);
+  /* The hero washes are deliberately wider than the viewport. `clip` trims the
+     overhang without creating a scroll container, so the sticky top bar and
+     in-page anchors keep working — `hidden` here would break both. */
+  overflow-x: clip;
+}
+
+.landing .section {
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* --------------------------------------------------------------- parallax --- */
+
+/* useParallax() publishes the scroll offset here; elements that already have a
+   transform of their own compose it in explicitly (see .friends-disc). */
+[data-parallax] {
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------- reveals --- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 620ms var(--ease-out) var(--d, 0ms),
+    transform 620ms var(--ease-out) var(--d, 0ms);
+  will-change: transform, opacity;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------ section head --- */
+
+.section-head {
+  max-width: 720px;
+  margin-bottom: var(--space-8);
+}
+
+.section-head h2,
+.split-copy h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: clamp(28px, 4.2vw, 44px);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  margin-top: var(--space-4);
+  text-wrap: balance;
+}
+
+.section-lede,
+.split-copy p {
+  margin-top: var(--space-4);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  max-width: 60ch;
+}
+
+.eyebrow-dark {
+  color: var(--cream-100);
+  background: rgba(255, 251, 246, .14);
+}
+
+/* =============================================================== 1. hero === */
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 64px) var(--space-6) 0;
+  isolation: isolate;
+}
+
+/* Two warm washes drifting at different rates behind the fold. */
+.hero-glow {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(10px);
+  inset: -14% auto auto -12%;
+  width: min(620px, 78vw);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(232, 168, 37, .30), transparent 62%);
+}
+
+.hero-glow-2 {
+  inset: 18% -18% auto auto;
+  left: auto;
+  width: min(560px, 72vw);
+  background: radial-gradient(circle, rgba(226, 84, 42, .20), transparent 64%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 56px);
+  align-items: center;
+}
+
+@media (min-width: 940px) {
+  .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+}
+
+.hero-copy h1 {
+  overflow-wrap: break-word;
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: clamp(38px, 6.4vw, 68px);
+  line-height: 1.04;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  margin-top: var(--space-5);
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+/* The payoff line, in the accent the app uses for its own reveals.
+   The underline is painted as a background rather than an absolutely-positioned
+   pseudo-element so it survives wrapping — Ukrainian and French run noticeably
+   longer than the English, and `nowrap` here used to push them off the page. */
+.hero-copy h1 em {
+  font-style: italic;
+  font-weight: var(--weight-bold);
+  color: var(--accent-hot);
+  background-image: linear-gradient(var(--accent-soft), var(--accent-soft));
+  background-repeat: no-repeat;
+  background-size: 100% .09em;
+  background-position: 0 88%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hero-lede {
+  margin-top: var(--space-5);
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  max-width: 48ch;
+}
+
+/* --- store buttons --- */
+
+.store-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-7);
+}
+
+.store-note {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+}
+
+.store-row-dark .store-note { color: rgba(255, 251, 246, .58); }
+
+.store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h-lg);
+  padding: 0 var(--space-6) 0 var(--space-5);
+  border-radius: var(--radius-button);
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  color: var(--text-strong);
+  text-decoration: none;
+  box-shadow: var(--shadow-1);
+  transition: var(--transition-control);
+}
+
+.store-btn svg { width: 26px; height: 26px; flex: 0 0 auto; }
+
+.store-btn span {
+  display: flex;
+  flex-direction: column;
+  font: var(--type-button);
+  line-height: 1.15;
+  text-align: left;
+}
+
+.store-btn small {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  opacity: .66;
+}
+
+.store-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+  color: var(--text-strong);
+}
+
+.store-btn:active { transform: scale(var(--press-scale)); }
+
+.store-btn-primary {
+  background: var(--accent-hot);
+  border-color: transparent;
+  color: var(--text-on-accent);
+  box-shadow: var(--shadow-hot);
+}
+
+.store-btn-primary:hover {
+  background: var(--accent-hot-hover);
+  color: var(--text-on-accent);
+  box-shadow: 0 14px 28px rgba(226, 84, 42, .34);
+}
+
+/* On the dark CTA sheet the outline button needs to read against plum. */
+.store-row-dark .store-btn:not(.store-btn-primary) {
+  background: rgba(255, 251, 246, .10);
+  border-color: var(--border-on-dark);
+  color: var(--cream-50);
+}
+
+.store-row-dark .store-btn:not(.store-btn-primary):hover {
+  background: rgba(255, 251, 246, .18);
+  color: var(--white);
+}
+
+/* --- hero stats --- */
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-soft);
+}
+
+.hero-stats dt {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-3xl);
+  line-height: 1;
+  color: var(--accent-press);
+  letter-spacing: var(--tracking-tight);
+}
+
+.hero-stats dd {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+  max-width: 20ch;
+  text-wrap: pretty;
+}
+
+/* --- the turning cup --- */
+
+.hero-stage {
+  display: flex;
+  justify-content: center;
+}
+
+.turning-cup-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.turning-cup {
+  position: relative;
+  width: min(420px, 78vw);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 1400px;
+  /* The saucer shadow the cup sits in. */
+  filter: drop-shadow(0 26px 34px rgba(62, 36, 23, .22));
+}
+
+.turning-cup-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 900ms var(--ease-out);
+}
+
+.turning-cup[data-turned='true'] .turning-cup-inner {
+  transform: rotateY(180deg) rotateX(6deg);
+}
+
+/* A slow float so the cup is never quite still. */
+.turning-cup:not([data-turned='true']) .turning-cup-inner {
+  animation: cup-float 7s var(--ease-in-out) infinite;
+}
+
+@keyframes cup-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateZ(0deg); }
+  50%      { transform: translate3d(0, -12px, 0) rotateZ(-1.4deg); }
+}
+
+.cup-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Upright: the tall to-go cup, letterboxed inside the square stage. */
+.cup-top-art { height: 100%; width: auto; max-width: 100%; }
+
+/* Turned: the base, as the app draws it — terracotta sleeve edge, porcelain
+   ring, and a pale recessed disc carrying the reading. */
+.cup-face-base {
+  transform: rotateY(180deg);
+  border-radius: 50%;
+  background: var(--terracotta-500);
+  box-shadow: 0 18px 40px rgba(62, 36, 23, .26);
+}
+
+.cup-face-art {
+  position: absolute;
+  inset: 2.5%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 26%, var(--white), #F6EFE4 62%, #E7DCCB 100%);
+}
+
+.cup-face-rim {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at 38% 28%, #EFECE6, #E4E0D8 70%, #D8D3C9 100%);
+  box-shadow:
+    inset 0 6px 18px rgba(62, 36, 23, .16),
+    inset 0 -4px 12px rgba(255, 255, 255, .55),
+    0 0 0 1px rgba(62, 36, 23, .07);
+}
+
+/* The grid discs keep the porcelain foot treatment. */
+.cup-disc-art {
+  position: absolute;
+  inset: 9%;
+  border-radius: 50%;
+  background: var(--disc-art);
+  box-shadow:
+    0 0 0 1px rgba(62, 36, 23, .10),
+    inset 0 8px 22px rgba(62, 36, 23, .26),
+    inset 0 -5px 14px rgba(255, 255, 255, .22);
+}
+
+.cup-disc-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, .85),
+    inset 0 -2px 4px rgba(62, 36, 23, .16);
+}
+
+/* The reading itself — the app sets it in the display face, italic, centred
+   in the recess. */
+.cup-face-text {
+  position: relative;
+  padding: 0 26%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--weight-bold);
+  font-size: clamp(14px, 3.2vw, 19px);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--roast-800);
+  text-wrap: balance;
+}
+
+/* The rarity stamp the app shows on a reveal, in that rarity's own ink. */
+.rarity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-h-sm);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--tier-border, var(--border-strong));
+  background: var(--surface-raised);
+  color: var(--tier-ink, var(--roast-600));
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px) scale(.96);
+  transition:
+    opacity var(--dur-slow) var(--ease-cozy),
+    transform var(--dur-slow) var(--ease-cozy);
+}
+
+.rarity-badge[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+  transition-delay: 420ms;
+}
+
+.rarity-badge svg { width: 16px; height: 16px; flex: 0 0 auto; }
+
+.turning-cup-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.turning-cup-hint::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2.4s var(--ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: .35; transform: scale(.8); }
+  50%      { opacity: 1; transform: scale(1.15); }
+}
+
+/* ============================================================= 2. ritual === */
+
+.ritual-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5);
+  counter-reset: ritual;
+}
+
+.ritual-steps li {
+  position: relative;
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  padding: var(--space-7) var(--space-6) var(--space-6);
+  box-shadow: var(--shadow-1), var(--shadow-inset-soft);
+  transition: transform var(--dur-slow) var(--ease-cozy), box-shadow var(--dur-slow) var(--ease-cozy);
+}
+
+.ritual-steps li:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-2);
+}
+
+.ritual-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-md);
+  color: var(--accent-press);
+  background: var(--accent-soft);
+  margin-bottom: var(--space-4);
+}
+
+.ritual-steps h3,
+.feature-grid h3,
+.cup-meta h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+}
+
+.ritual-steps p,
+.feature-grid p {
+  margin-top: var(--space-3);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+}
+
+/* ===================================================== 3. prediction wall === */
+
+.wall {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+  max-height: 620px;
+  overflow: hidden;
+}
+
+.wall-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* The middle column starts lower, so the three never line up. */
+.wall-col:nth-child(2) { margin-top: var(--space-8); }
+.wall-col:nth-child(3) { margin-top: var(--space-4); }
+
+/* Cards echo the app's History rows: a rule down the left in the reading's
+   rarity ink, plain hairline for the common ones. */
+.prediction-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-left: 3px solid var(--tier-border, var(--border-soft));
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-1);
+}
+
+.prediction-card.tier-rare {
+  --tier-border: var(--rarity-rare-border);
+  --tier-ink: var(--rarity-rare-ink);
+}
+
+.prediction-card.tier-epic {
+  --tier-border: var(--rarity-epic-border);
+  --tier-ink: var(--rarity-epic-ink);
+}
+
+.prediction-card.tier-legendary {
+  --tier-border: var(--rarity-legendary-border);
+  --tier-ink: var(--rarity-legendary-ink);
+}
+
+.prediction-card blockquote {
+  font-family: var(--font-display);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  text-wrap: pretty;
+}
+
+.prediction-author {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.prediction-author::before { content: '— '; }
+
+.prediction-rarity {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--tier-ink, var(--text-muted));
+}
+
+/* Fades the wall into the page rather than cutting it off. */
+.wall-fade {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 190px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(253, 243, 232, 0), var(--bg-app) 88%);
+}
+
+/* =============================================================== 4. cups === */
+
+.cup-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--space-5);
+}
+
+.cup-grid li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-4) var(--space-5);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  text-align: center;
+  transition: transform var(--dur-slow) var(--ease-cozy), box-shadow var(--dur-slow) var(--ease-cozy);
+}
+
+.cup-grid li:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-3);
+}
+
+/* The vessel itself, side-on, in the collection grid. */
+.cup-shape {
+  width: 100%;
+  max-width: 132px;
+  height: auto;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 6px 14px rgba(62, 36, 23, .12));
+  transition: transform var(--dur-slow) var(--ease-cozy);
+}
+
+.cup-grid li:hover .cup-shape { transform: translateY(-4px) rotate(-3deg) scale(1.04); }
+
+/* The disc — a cup's base, art clipped to the porcelain circle. */
+.cup-disc {
+  position: relative;
+  width: var(--disc-size, 118px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background:
+    radial-gradient(circle at 34% 26%, var(--white), var(--cream-200) 72%, var(--tan-400));
+  box-shadow: var(--shadow-2);
+  transition: transform var(--dur-slow) var(--ease-cozy);
+}
+
+.cup-meta h3 { font-size: var(--text-md); }
+
+.cup-move {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Badges carry the app's rarity ink, border and glow verbatim. */
+.cup-tier {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  border: 1px solid var(--tier-border, var(--border-strong));
+  color: var(--tier-ink, var(--roast-600));
+  box-shadow: 0 0 0 3px var(--tier-glow, transparent);
+}
+
+.cup-tier.tier-classic {
+  --tier-border: var(--rarity-classic-border);
+  --tier-ink: var(--rarity-classic-ink);
+  --tier-glow: var(--rarity-classic-glow);
+}
+
+.cup-tier.tier-rare {
+  --tier-border: var(--rarity-rare-border);
+  --tier-ink: var(--rarity-rare-ink);
+  --tier-glow: color-mix(in srgb, var(--rarity-rare-glow) 34%, transparent);
+}
+
+.cup-tier.tier-epic {
+  --tier-border: var(--rarity-epic-border);
+  --tier-ink: var(--rarity-epic-ink);
+  --tier-glow: color-mix(in srgb, var(--rarity-epic-glow) 34%, transparent);
+}
+
+.cup-tier.tier-legendary {
+  --tier-border: var(--rarity-legendary-border);
+  --tier-ink: var(--rarity-legendary-ink);
+  --tier-glow: color-mix(in srgb, var(--rarity-legendary-glow) 34%, transparent);
+}
+
+/* A legendary cup gets the halo it has in the store grid. Drop-shadow rather
+   than box-shadow: the vessel is an irregular silhouette, not a circle. */
+.cup-grid li:has(.tier-legendary) .cup-shape {
+  filter: drop-shadow(0 6px 14px rgba(62, 36, 23, .12)) drop-shadow(0 0 12px var(--rarity-legendary-glow));
+}
+
+.cup-grid li:has(.tier-epic) .cup-shape {
+  filter: drop-shadow(0 6px 14px rgba(62, 36, 23, .12)) drop-shadow(0 0 10px var(--rarity-epic-glow));
+}
+
+.cup-grid li:has(.tier-rare) .cup-shape {
+  filter: drop-shadow(0 6px 14px rgba(62, 36, 23, .12)) drop-shadow(0 0 9px var(--rarity-rare-glow));
+}
+
+.rarity-ladder {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+  padding: var(--space-5);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+}
+
+.rarity-ladder li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 160px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.rarity-ladder strong { color: var(--text-strong); font-weight: var(--weight-semibold); }
+
+.rarity-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tier-border);
+  box-shadow: 0 0 0 4px var(--tier-glow);
+}
+
+.rarity-ladder li.tier-classic {
+  --tier-border: var(--rarity-classic-border);
+  --tier-glow: var(--rarity-classic-glow);
+}
+.rarity-ladder li.tier-rare {
+  --tier-border: var(--rarity-rare-border);
+  --tier-glow: color-mix(in srgb, var(--rarity-rare-glow) 34%, transparent);
+}
+.rarity-ladder li.tier-epic {
+  --tier-border: var(--rarity-epic-border);
+  --tier-glow: color-mix(in srgb, var(--rarity-epic-glow) 34%, transparent);
+}
+.rarity-ladder li.tier-legendary {
+  --tier-border: var(--rarity-legendary-border);
+  --tier-glow: color-mix(in srgb, var(--rarity-legendary-glow) 34%, transparent);
+}
+
+/* ============================================================= 5. points === */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .split { grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); gap: var(--space-9); }
+}
+
+.earn-list {
+  list-style: none;
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  padding: var(--space-3) var(--space-6);
+  box-shadow: var(--shadow-2), var(--shadow-inset-soft);
+}
+
+.earn-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: var(--text-base);
+  color: var(--text-body);
+}
+
+.earn-list li:last-child { border-bottom: none; }
+
+.earn-list strong {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: var(--text-xl);
+  color: var(--accent-press);
+  white-space: nowrap;
+}
+
+/* ============================================================ 6. friends === */
+
+.friends-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: center;
+  background: var(--bg-sheet);
+  border-radius: var(--radius-2xl);
+  padding: clamp(28px, 5vw, 64px);
+  color: var(--text-inverse);
+}
+
+@media (min-width: 900px) {
+  .friends-card { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
+}
+
+.friends-card h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--cream-50);
+  margin-top: var(--space-4);
+  text-wrap: balance;
+}
+
+.friends-card p {
+  margin-top: var(--space-4);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: rgba(255, 251, 246, .78);
+  max-width: 46ch;
+}
+
+.friends-note {
+  font-size: var(--text-base) !important;
+  color: rgba(255, 251, 246, .55) !important;
+}
+
+.friends-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+}
+
+.friends-disc:nth-child(1) {
+  --disc-size: 132px;
+  transform: translate3d(0, var(--parallax-y, 0px), 0) translateX(-92%) rotate(-9deg);
+}
+
+.friends-disc:nth-child(2) {
+  --disc-size: 168px;
+  z-index: 2;
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+}
+
+.friends-disc:nth-child(3) {
+  --disc-size: 132px;
+  transform: translate3d(0, var(--parallax-y, 0px), 0) translateX(92%) rotate(9deg);
+}
+
+.friends-disc { position: absolute; }
+.friends-disc .cup-disc { box-shadow: var(--shadow-3); }
+
+/* =========================================================== 7. features === */
+
+.feature-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+.feature-grid li {
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-1);
+}
+
+.feature-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--accent-press);
+  margin-bottom: var(--space-4);
+}
+
+.feature-grid h3 { font-size: var(--text-lg); }
+
+/* ================================================================ 8. FAQ === */
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: var(--prose-max);
+}
+
+.faq-list details {
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.faq-list summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+  transition: background-color var(--dur-base) var(--ease-cozy);
+}
+
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary:hover { background: var(--surface-sunken); }
+
+.faq-list summary svg {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  color: var(--accent);
+  transition: transform var(--dur-slow) var(--ease-cozy);
+}
+
+.faq-list details[open] summary svg { transform: rotate(180deg); }
+
+.faq-list details p {
+  padding: 0 var(--space-6) var(--space-5);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+  max-width: 64ch;
+}
+
+.faq-more {
+  margin-top: var(--space-6);
+  font-size: var(--text-base);
+  color: var(--text-muted);
+}
+
+/* ================================================================ 9. CTA === */
+
+.cta-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(150deg, var(--roast-800), var(--plum-900) 62%, var(--roast-900));
+  border-radius: var(--radius-2xl);
+  padding: clamp(40px, 6vw, 80px) var(--space-6);
+  color: var(--cream-50);
+}
+
+.cta-glow {
+  position: absolute;
+  z-index: -1;
+  inset: -40% -10% auto auto;
+  width: min(600px, 90vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 168, 37, .26), transparent 62%);
+  pointer-events: none;
+}
+
+/* Three elements only — the headline carries the section, so it gets the room. */
+.cta-card h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  font-size: clamp(32px, 5.4vw, 56px);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--cream-50);
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+.cta-card > p {
+  margin-top: var(--space-4);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: rgba(255, 251, 246, .72);
+}
+
+.cta-card .store-row {
+  justify-content: center;
+  margin-top: var(--space-8);
+}
+
+/* ========================================================== responsive === */
+
+@media (max-width: 939px) {
+  /* Lead with the cup on a phone — it explains the app before the headline does. */
+  .hero-stage { order: -1; }
+  .turning-cup { width: min(320px, 72vw); }
+  .hero-copy h1 { max-width: none; }
+}
+
+@media (max-width: 720px) {
+  .landing .section, .hero { padding-left: var(--space-5); padding-right: var(--space-5); }
+  .hero-stats { gap: var(--space-5) var(--space-6); }
+  .hero-stats dt { font-size: var(--text-2xl); }
+  .store-btn { flex: 1 1 220px; justify-content: center; }
+  .wall { max-height: 520px; }
+  .friends-disc:nth-child(1) { transform: translate3d(0, var(--parallax-y, 0px), 0) translateX(-78%) rotate(-9deg); }
+  .friends-disc:nth-child(3) { transform: translate3d(0, var(--parallax-y, 0px), 0) translateX(78%) rotate(9deg); }
+}
+
+@media (max-width: 560px) {
+  .landing .section, .hero { padding-left: var(--space-4); padding-right: var(--space-4); }
+  .cup-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-3); }
+  .cup-grid li { padding: var(--space-5) var(--space-3) var(--space-4); }
+  .cup-shape { max-width: 96px; }
+  .cup-disc { --disc-size: 92px; }
+  .faq-list summary { padding: var(--space-4) var(--space-5); font-size: var(--text-md); }
+  .faq-list details p { padding: 0 var(--space-5) var(--space-4); }
+  .friends-disc:nth-child(2) { --disc-size: 132px; }
+  .friends-disc:nth-child(1), .friends-disc:nth-child(3) { --disc-size: 104px; }
+}
+
+/* ------------------------------------------------------ reduced motion --- */
+/* index.css already flattens durations globally; these are the pieces that
+   need to be switched off rather than merely sped up. */
+
+@media (prefers-reduced-motion: reduce) {
+  .turning-cup:not([data-turned='true']) .turning-cup-inner { animation: none; }
+  .turning-cup-hint::before { animation: none; }
+  [data-reveal] { opacity: 1; transform: none; }
+  .cup-grid li:hover .cup-disc,
+  .cup-grid li:hover,
+  .ritual-steps li:hover,
+  .store-btn:hover { transform: none; }
+}

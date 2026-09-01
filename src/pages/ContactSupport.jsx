@@ -1,11 +1,22 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoMark } from '../components/Logo'
+import { useDocumentMeta } from '../hooks/useDocumentMeta'
+import { useTranslation } from '../i18n'
 import './Page.css'
 
 const SUPPORT_EMAIL = 'ischenko.vadyus@gmail.com'
 
 function ContactSupport() {
+  const { t, locale, dict } = useTranslation()
+
+  useDocumentMeta({
+    title: t('contact.meta.title'),
+    description: t('contact.meta.description'),
+    path: '/contact',
+    locale,
+  })
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -56,15 +67,15 @@ function ContactSupport() {
     } catch (err) {
       console.error('Email sending error:', err)
 
-      let errorMessage = 'We could not send that. '
+      let errorMessage = `${t('contact.form.errorLead')} `
       if (err.message && err.message.includes('Backend API is not configured')) {
-        errorMessage += err.message
+        errorMessage += `${t('contact.form.errorNotConfigured')} ${SUPPORT_EMAIL}`
       } else if (err.message && err.message.includes('JSON')) {
-        errorMessage += `The support server is not responding correctly. Please email us directly at ${SUPPORT_EMAIL}`
+        errorMessage += `${t('contact.form.errorBadJson')} ${SUPPORT_EMAIL}`
       } else if (err.message && (err.message.includes('405') || err.message.includes('404'))) {
-        errorMessage += `The support server is unavailable. Please email us directly at ${SUPPORT_EMAIL}`
+        errorMessage += `${t('contact.form.errorUnavailable')} ${SUPPORT_EMAIL}`
       } else {
-        errorMessage += err.message || `Please try again, or email us directly at ${SUPPORT_EMAIL}`
+        errorMessage += `${t('contact.form.errorGeneric')} ${SUPPORT_EMAIL}`
       }
 
       setError(errorMessage)
@@ -76,14 +87,11 @@ function ContactSupport() {
   return (
     <div className="page">
       <header className="page-hero">
-        <span className="eyebrow">Support</span>
-        <h1>How can we help?</h1>
-        <p className="page-description">
-          Trouble with your cup, your points, a friend request, or a purchase? Send us a note and
-          we will get back to you. We read every message ourselves.
-        </p>
+        <span className="eyebrow">{t('contact.eyebrow')}</span>
+        <h1>{t('contact.title')}</h1>
+        <p className="page-description">{t('contact.lede')}</p>
         <p className="last-updated">
-          <strong>Typical reply time:</strong>&nbsp;24–48 hours
+          <strong>{t('contact.replyLabel')}</strong>&nbsp;{t('contact.replyValue')}
         </p>
       </header>
 
@@ -91,7 +99,7 @@ function ContactSupport() {
         <div>
           {submitted && (
             <div className="success-message" role="status">
-              Thanks — your message is on its way. We will reply to the email address you gave us.
+              {t('contact.form.success')}
             </div>
           )}
 
@@ -103,7 +111,7 @@ function ContactSupport() {
 
           <form className="contact-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="name">Name *</label>
+              <label htmlFor="name">{t('contact.form.name')} *</label>
               <input
                 type="text"
                 id="name"
@@ -112,12 +120,12 @@ function ContactSupport() {
                 onChange={handleChange}
                 required
                 autoComplete="name"
-                placeholder="Your name"
+                placeholder={t('contact.form.namePlaceholder')}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email *</label>
+              <label htmlFor="email">{t('contact.form.email')} *</label>
               <input
                 type="email"
                 id="email"
@@ -126,12 +134,12 @@ function ContactSupport() {
                 onChange={handleChange}
                 required
                 autoComplete="email"
-                placeholder="you@example.com"
+                placeholder={t('contact.form.emailPlaceholder')}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="subject">Subject *</label>
+              <label htmlFor="subject">{t('contact.form.subject')} *</label>
               <input
                 type="text"
                 id="subject"
@@ -139,12 +147,12 @@ function ContactSupport() {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                placeholder="Points missing after a purchase"
+                placeholder={t('contact.form.subjectPlaceholder')}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="message">Message *</label>
+              <label htmlFor="message">{t('contact.form.message')} *</label>
               <textarea
                 id="message"
                 name="message"
@@ -152,17 +160,17 @@ function ContactSupport() {
                 onChange={handleChange}
                 required
                 rows="6"
-                placeholder="Tell us what happened. If it is about a purchase, the date and the pack you bought help a lot."
+                placeholder={t('contact.form.messagePlaceholder')}
               />
             </div>
 
             <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Sending…' : 'Send message'}
+              {loading ? t('contact.form.sending') : t('contact.form.submit')}
             </button>
 
             <p className="form-note">
-              We use what you send only to answer you — see the{' '}
-              <Link to="/privacy">Privacy Policy</Link>.
+              {t('contact.form.noteLead')}{' '}
+              <Link to="/privacy">{t('contact.form.notePrivacy')}</Link>.
             </p>
           </form>
         </div>
@@ -172,68 +180,51 @@ function ContactSupport() {
             <div className="footer-brand" style={{ marginBottom: 'var(--space-4)' }}>
               <LogoMark />
             </div>
-            <h2>Reach us directly</h2>
+            <h2>{t('contact.direct.title')}</h2>
             <ul>
               <li>
-                Email: <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+                {t('contact.direct.email')}{' '}
+                <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
               </li>
-              <li>Replies usually within 24–48 hours</li>
-              <li>English, Spanish, French and Ukrainian</li>
+              <li>{t('contact.direct.replies')}</li>
+              <li>{t('contact.direct.languages')}</li>
             </ul>
           </div>
 
           <div className="info-card">
-            <h2>Common questions</h2>
+            <h2>{t('contact.faqTitle')}</h2>
 
-            <div className="faq-item">
-              <h3>I bought points and they never arrived</h3>
-              <p>
-                Reopen the app while online — verification usually completes on its own. If it does
-                not, email us with the purchase date and pack and we will credit it manually.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3>I want a refund</h3>
-              <p>
-                Refunds are handled by Apple and Google, not by us. Use{' '}
-                <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener noreferrer">
-                  reportaproblem.apple.com
-                </a>{' '}
-                or your Google Play order history.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3>Someone is bothering me</h3>
-              <p>
-                Block them from their profile — it stops all interaction immediately — and report
-                them. We review every report and act within 24 hours.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3>How do I delete my account?</h3>
-              <p>
-                In the app: <strong>Settings → Delete account</strong>. For a full erasure of the
-                underlying account record, email us and we will complete it within 30 days.
-              </p>
-            </div>
-
-            <div className="faq-item">
-              <h3>Lost my history after reinstalling</h3>
-              <p>
-                Sign in with the same Apple or Google account and your cups, points and history come
-                back. History created while signed out lives only on that device.
-              </p>
-            </div>
+            {(dict.contact?.faq ?? []).map((item) => (
+              <div className="faq-item" key={item.q}>
+                <h3>{item.q}</h3>
+                <p>
+                  {/* The refund answer is the only one carrying a link; splice it
+                      back in around Apple's URL so translators keep plain text. */}
+                  {item.a.includes('reportaproblem.apple.com') ? (
+                    <>
+                      {item.a.split('reportaproblem.apple.com')[0]}
+                      <a
+                        href="https://reportaproblem.apple.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        reportaproblem.apple.com
+                      </a>
+                      {item.a.split('reportaproblem.apple.com')[1]}
+                    </>
+                  ) : (
+                    item.a
+                  )}
+                </p>
+              </div>
+            ))}
           </div>
 
           <div className="info-card">
-            <h2>Legal</h2>
+            <h2>{t('contact.legalTitle')}</h2>
             <ul>
-              <li><Link to="/privacy">Privacy Policy</Link></li>
-              <li><Link to="/terms">Terms of Use</Link></li>
+              <li><Link to="/privacy">{t('footer.privacy')}</Link></li>
+              <li><Link to="/terms">{t('footer.terms')}</Link></li>
             </ul>
           </div>
         </aside>

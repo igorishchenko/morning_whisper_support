@@ -40,6 +40,23 @@
   --berry-500: #D62839;
   --white: #FFFFFF;
 
+  /* Rarity ladder — shared by cups and gifts. Deliberately cool hues: they are
+     the only things in the product that are not warm, so a rare or epic badge
+     reads instantly against the cream. Mirrors `RarityColors` in the app's
+     constants/theme/sereneMorning.ts — change both together. */
+  --rarity-classic-border: var(--border-strong);
+  --rarity-classic-ink: var(--roast-600);
+  --rarity-classic-glow: rgba(62, 36, 23, .10);
+  --rarity-rare-border: #5B8BC9;
+  --rarity-rare-ink: #3E6699;
+  --rarity-rare-glow: rgba(91, 139, 201, .45);
+  --rarity-epic-border: #9B6BC9;
+  --rarity-epic-ink: #7649A8;
+  --rarity-epic-glow: rgba(155, 107, 201, .50);
+  --rarity-legendary-border: #E8A825;
+  --rarity-legendary-ink: #C6431F;
+  --rarity-legendary-glow: rgba(232, 168, 37, .65);
+
   /* Semantic aliases — use these in components */
   --bg-app: var(--cream-100);
   --bg-app-warm: var(--cream-300);

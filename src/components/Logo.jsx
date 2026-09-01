@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * Turn the Cup brand mark — the tilted cup seen from above, whisper showing on
+ * Turn the Cup brand mark — the tilted cup seen from above, the reading showing on
  * its base. Traced from `brand/logo.svg` in the Turn the Cup design project.
  */
 export function LogoMark({ className = 'logo-mark' }) {
